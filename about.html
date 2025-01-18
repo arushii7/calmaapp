@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Calma</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://clerk.browser.accounts.dev/npm/@clerk/clerk-js@4/dist/clerk.browser.js"></script>
+    <script>
+        const clerk = window.Clerk("pk_test_d2lyZWQtYWtpdGEtMS5jbGVyay5hY2NvdW50cy5kZXYk");
+        
+        async function initClerk() {
+            await clerk.load();
+            
+            if (clerk.user) {
+                document.getElementById("sign-in-btn").style.display = "none";
+                document.getElementById("user-profile").style.display = "block";
+            }
+        }
+
+        initClerk();
+    </script>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="index.html">Calma</a>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="about.html" class="active">About</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="profile.html">Profile</a></li>
+                <li><a href="signin.html">Sign In</a></li>
+                <li id="user-profile" style="display: none;">
+                    <button onclick="clerk.openUserProfile()">Profile</button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="about-hero">
+            <h1>About Calma</h1>
+            <div class="about-content">
+                <div class="about-section">
+                    <h2>Our Mission</h2>
+                    <p>Calma is dedicated to helping students manage academic stress effectively through personalized strategies and support.</p>
+                </div>
+
+                <div class="about-section">
+                    <h2>Our Approach</h2>
+                    <p>We combine scientific research with practical solutions to provide comprehensive stress management tools.</p>
+                </div>
+
+                <div class="about-section">
+                    <h2>Features</h2>
+                    <div class="features-grid">
+                        <div class="feature">
+                            <h3>Stress Assessment</h3>
+                            <p>Scientifically validated questionnaires to evaluate stress levels</p>
+                        </div>
+                        <div class="feature">
+                            <h3>Personalized Plans</h3>
+                            <p>Custom stress management strategies based on your assessment</p>
+                        </div>
+                        <div class="feature">
+                            <h3>Progress Tracking</h3>
+                            <p>Monitor your improvement over time</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Calma. All rights reserved.</p>
+    </footer>
+</body>
+</html>

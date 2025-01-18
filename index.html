@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calma - Stress Management Tool</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/@clerk/clerk-js@4/dist/clerk.browser.js"></script>
+    <style>
+        /* Modal Styles */
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-dialog {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            position: relative;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: #666;
+            font-size: 1rem;
+            position: relative;
+        }
+
+        .tab.active {
+            color: #87A878;
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #87A878;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: #87A878;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .submit-btn:hover {
+            background: #6B8A5E;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .form-container {
+            display: none;
+        }
+
+        .form-container.active {
+            display: block;
+        }
+
+        .close-btn {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .success-message {
+            color: #28a745;
+            text-align: center;
+            display: none;
+            padding: 1rem;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-top: 0.5rem;
+        }
+
+        .forgot-password a {
+            color: #87A878;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="index.html">Calma</a>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="about.html">About</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="profile.html">Profile</a></li>
+                <li id="sign-in-btn"><a href="#" onclick="openModal(); return false;">Sign In</a></li>
+                <li id="user-profile" style="display: none;">
+                    <button onclick="clerk.openUserProfile()">Profile</button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <img src="image/Student-Stress.jpg" alt="Student Stress" class="hero-image">
+            <div class="hero-text">
+                <h1>Welcome to Calma</h1>
+                <p>Your personal stress management companion</p>
+            </div>
+        </section>
+
+        <section id="features">
+            <h2>Our Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>Stress Assessment</h3>
+                    <p>Take our comprehensive stress analysis questionnaire</p>
+                    <a href="questionnaire.html" class="feature-button">Start Assessment</a>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>About Us</h3>
+                    <p>Learn more about our mission and approach</p>
+                    <a href="about.html" class="feature-button">Learn More</a>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>Resources</h3>
+                    <p>Access our curated stress management resources</p>
+                    <a href="resources.html" class="feature-button">View Resources</a>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>Your Profile</h3>
+                    <p>Track your progress and manage your journey</p>
+                    <a href="profile.html" class="feature-button">View Profile</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Auth Modal -->
+    <div class="modal-backdrop" id="authModal">
+        <div class="modal-dialog">
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+            
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('signin')">Sign In</button>
+                <button class="tab" onclick="switchTab('signup')">Sign Up</button>
+            </div>
+
+            <!-- Sign In Form -->
+            <div id="signin-form" class="form-container active">
+                <form onsubmit="handleSignIn(event)">
+                    <div class="form-group">
+                        <label for="signin-email">Email</label>
+                        <input type="email" id="signin-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signin-password">Password</label>
+                        <input type="password" id="signin-password" required>
+                    </div>
+                    <div class="forgot-password">
+                        <a href="#" onclick="handleForgotPassword(event)">Forgot password?</a>
+                    </div>
+                    <div class="error-message" id="signin-error"></div>
+                    <button type="submit" class="submit-btn">Sign In</button>
+                </form>
+            </div>
+
+            <!-- Sign Up Form -->
+            <div id="signup-form" class="form-container">
+                <form onsubmit="handleSignUp(event)">
+                    <div class="form-group">
+                        <label for="signup-email">Email</label>
+                        <input type="email" id="signup-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password">Password</label>
+                        <input type="password" id="signup-password" required>
+                    </div>
+                    <div class="error-message" id="signup-error"></div>
+                    <button type="submit" class="submit-btn">Sign Up</button>
+                </form>
+            </div>
+
+            <div class="success-message" id="success-message"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Calma. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const clerk = window.Clerk('pk_test_d2lyZWQtYWtpdGEtMS5jbGVyay5hY2NvdW50cy5kZXYk');
+
+        async function initClerk() {
+            await clerk.load();
+            
+            if (clerk.user) {
+                document.getElementById('sign-in-btn').style.display = 'none';
+                document.getElementById('user-profile').style.display = 'block';
+            } else {
+                document.getElementById('sign-in-btn').style.display = 'block';
+                document.getElementById('user-profile').style.display = 'none';
+            }
+        }
+
+        initClerk();
+
+        function openModal() {
+            document.getElementById('authModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('authModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            clearErrors();
+            clearForms();
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.form-container').forEach(f => f.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(`${tab}-form`).classList.add('active');
+            
+            clearErrors();
+        }
+
+        function clearErrors() {
+            document.querySelectorAll('.error-message').forEach(err => {
+                err.style.display = 'none';
+                err.textContent = '';
+            });
+        }
+
+        function clearForms() {
+            document.querySelectorAll('form').forEach(form => form.reset());
+        }
+
+        function showError(formType, message) {
+            const errorElement = document.getElementById(`${formType}-error`);
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+
+        async function handleSignIn(event) {
+            event.preventDefault();
+            clearErrors();
+
+            const email = document.getElementById('signin-email').value;
+            const password = document.getElementById('signin-password').value;
+
+            try {
+                const signInAttempt = await clerk.signIn.create({
+                    identifier: email,
+                    password: password
+                });
+
+                if (signInAttempt.status === 'complete') {
+                    showSuccess('Successfully signed in!');
+                    setTimeout(() => {
+                        closeModal();
+                        location.reload();
+                    }, 2000);
+                }
+            } catch (error) {
+                showError('signin', error.message || 'Sign in failed. Please try again.');
+            }
+        }
+
+        async function handleSignUp(event) {
+            event.preventDefault();
+            clearErrors();
+
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+
+            try {
+                const signUpAttempt = await clerk.signUp.create({
+                    emailAddress: email,
+                    password: password
+                });
+
+                if (signUpAttempt.status === 'complete') {
+                    showSuccess('Account created successfully!');
+                    setTimeout(() => {
+                        closeModal();
+                        location.reload();
+                    }, 2000);
+                }
+            } catch (error) {
+                showError('signup', error.message || 'Sign up failed. Please try again.');
+            }
+        }
+
+        async function handleForgotPassword(event) {
+            event.preventDefault();
+            const email = document.getElementById('signin-email').value;
+            
+            if (!email) {
+                showError('signin', 'Please enter your email address first');
+                return;
+            }
+
+            try {
+                await clerk.signIn.create({
+                    strategy: "reset_password_email_code",
+                    identifier: email
+                });
+                showSuccess('Password reset email sent!');
+            } catch (error) {
+                showError('signin', error.message || 'Failed to send reset email');
+            }
+        }
+
+        function showSuccess(message) {
+            const successElement = document.getElementById('success-message');
+            successElement.textContent = message;
+            successElement.style.display = 'block';
+            
+            document.querySelectorAll('.form-container').forEach(f => f.style.display = 'none');
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('authModal').addEventListener('click', (e) => {
+            if (e.target.id === 'authModal') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

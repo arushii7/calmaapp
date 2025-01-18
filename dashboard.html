@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <script async src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest"></script>
+    <script>
+        window.Clerk.load({ frontendApi: "pk_test_d2lyZWQtYWtpdGEtMS5jbGVyay5hY2NvdW50cy5kZXYk" });
+    </script>
+</head>
+<body>
+    <h1>Welcome to Your Dashboard</h1>
+    <button onclick="Clerk.signOut()">Log Out</button>
+</body>
+</html>

@@ -1,0 +1,308 @@
+:root {
+    --sage-green: #9CAF88;
+    --light-sage: #D1E2C4;
+    --dark-sage: #738268;
+    --off-white: #F8F8F8;
+    --text-dark: #333333;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: var(--text-dark);
+    background-color: var(--off-white);
+}
+
+header {
+    background-color: var(--sage-green);
+    padding: 1rem 2rem;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.logo a {
+    color: white;
+    text-decoration: none;
+    font-size: 2rem;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.logo a:hover {
+    color: var(--light-sage);
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+    align-items: center; /* Added for vertical alignment */
+}
+
+nav ul li {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    padding: 0.5rem 1rem;
+    display: inline-block;
+    line-height: 1.5;
+}
+
+nav a:hover {
+    color: var(--light-sage);
+}
+
+main {
+    margin-top: 60px;
+    min-height: calc(100vh - 60px);
+}
+
+.hero {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.hero-image {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.7);
+}
+
+.hero-text {
+    position: relative;
+    color: white;
+    z-index: 1;
+}
+
+.hero-text h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+}
+
+section {
+    padding: 4rem 2rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+section h2 {
+    color: var(--dark-sage);
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+}
+
+/* Login Section Styles */
+.login-section {
+    min-height: auto;
+    background-color: var(--light-sage);
+    padding: 4rem 2rem;
+}
+
+.login-box {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-dark);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--sage-green);
+    border-radius: 4px;
+}
+
+.login-button {
+    background-color: var(--sage-green);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: var(--dark-sage);
+}
+
+/* Questionnaire Page Specific Styles */
+.questionnaire-page {
+    padding-top: 80px;
+    min-height: calc(100vh - 60px);
+}
+
+.questionnaire-page h1 {
+    color: var(--dark-sage);
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+}
+
+.questionnaire-description {
+    max-width: 800px;
+    margin: 0 auto 2rem;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.form-container {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Features Section */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    max-width: 1200px;
+    width: 100%;
+    padding: 2rem;
+}
+
+.feature-card {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.feature-card h3 {
+    color: var(--dark-sage);
+    margin-bottom: 1rem;
+}
+
+.feature-button {
+    display: inline-block;
+    background-color: var(--sage-green);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    text-decoration: none;
+    margin-top: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.feature-button:hover {
+    background-color: var(--dark-sage);
+}
+
+#sign-in-btn {
+    background-color: var(--sage-green);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#sign-in-btn:hover {
+    background-color: var(--dark-sage);
+}
+
+/* Added styles for user profile button */
+#user-profile button {
+    background-color: var(--sage-green);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font: inherit;
+}
+
+#user-profile button:hover {
+    background-color: var(--dark-sage);
+}
+
+footer {
+    background-color: var(--sage-green);
+    color: white;
+    text-align: center;
+    padding: 1rem;
+}
+
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        padding: 1rem;
+    }
+    nav ul {
+        margin-top: 1rem;
+        gap: 1rem;
+    }
+    .hero-text h1 {
+        font-size: 2.5rem;
+    }
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+    .questionnaire-description,
+    .form-container {
+        padding: 1rem;
+    }
+}

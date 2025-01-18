@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resources - Calma</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://clerk.browser.accounts.dev/npm/@clerk/clerk-js@4/dist/clerk.browser.js"></script>
+    <script>
+        async function initClerk() {
+            await window.Clerk.load();
+            const user = window.Clerk.user;
+            const signInBtn = document.getElementById("sign-in-btn");
+            const userProfileBtn = document.getElementById("user-profile");
+
+            if (user) {
+                signInBtn.style.display = "none";
+                userProfileBtn.style.display = "block";
+            } else {
+                signInBtn.style.display = "block";
+                userProfileBtn.style.display = "none";
+            }
+        }
+        document.addEventListener("DOMContentLoaded", initClerk);
+
+        function startBreathingExercise() {
+            const popup = document.createElement('div');
+            popup.id = 'breathing-popup';
+            popup.innerHTML = `
+                <div class="breathing-container">
+                    <div id="breathing-circle">
+                        <span id="timer">4</span>
+                    </div>
+                    <p id="breathing-text">Breathe In</p>
+                    <button id="exit-button" onclick="exitBreathingExercise()">Exit</button>
+                </div>
+            `;
+            document.body.appendChild(popup);
+
+            let count = 0;
+            function breathe() {
+                if (count >= 5) {
+                    document.body.removeChild(popup);
+                    window.location.href = 'resources.html';
+                    return;
+                }
+                let timer = 4;
+                const timerElement = document.getElementById('timer');
+
+                const interval = setInterval(() => {
+                    timer--;
+                    timerElement.textContent = timer;
+                    if (timer === 0) {
+                        clearInterval(interval);
+
+                        if (document.getElementById('breathing-text').textContent === "Breathe In") {
+                            document.getElementById('breathing-text').textContent = "Hold";
+                            timer = 7;
+                            timerElement.textContent = timer;
+                            document.getElementById('breathing-circle').classList.remove('expand');
+                        } else if (document.getElementById('breathing-text').textContent === "Hold") {
+                            document.getElementById('breathing-text').textContent = "Breathe Out";
+                            timer = 8;
+                            timerElement.textContent = timer;
+                        } else {
+                            document.getElementById('breathing-text').textContent = "Breathe In";
+                            timer = 4;
+                            timerElement.textContent = timer;
+                            document.getElementById('breathing-circle').classList.add('expand');
+                            count++;
+                        }
+
+                        if (count < 5) {
+                            breathe();
+                        }
+                    }
+                }, 1000);
+            }
+
+            breathe();
+        }
+
+        function exitBreathingExercise() {
+            const popup = document.getElementById('breathing-popup');
+            if (popup) {
+                document.body.removeChild(popup);
+                window.location.href = 'resources.html';
+            }
+        }
+    </script>
+    <style>
+        #breathing-popup {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .breathing-container {
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+        #breathing-circle {
+            width: 120px;
+            height: 120px;
+            background: #A3C4A8;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            transition: transform 4s ease-in-out;
+        }
+        #breathing-circle.expand {
+            transform: scale(1.5);
+        }
+        #breathing-text {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+        #exit-button {
+            margin-top: 20px;
+            background-color: #FF6B6B;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        #exit-button:hover {
+            background-color: #E63946;
+        }
+        .resource-button {
+            background-color: #A3C4A8;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .resource-button:hover {
+            background-color: #8FAF94;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="index.html">Calma</a>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="about.html">About</a></li>
+                <li><a href="resources.html" class="active">Resources</a></li>
+                <li><a href="profile.html">Profile</a></li>
+                <li><a href="signin.html">Sign In</a></li>
+                <li id="user-profile" style="display: none;">
+                    <button onclick="window.Clerk.openUserProfile()">Profile</button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="resources-hero">
+            <h1>Stress Management Resources</h1>
+
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <h2>Mindfulness Exercises</h2>
+                    <div class="resource-content">
+                        <h3>Deep Breathing</h3>
+                        <p>Practice the 4-7-8 breathing technique to quickly calm your mind.</p>
+                        <button onclick="startBreathingExercise()" class="resource-button">Try Exercise</button>
+                    </div>
+                </div>
+
+                <div class="resource-card">
+                    <h2>Time Management</h2>
+                    <div class="resource-content">
+                        <h3>Pomodoro Technique</h3>
+                        <p>Work in focused intervals with short breaks to enhance productivity.</p>
+                        <li></li><a href="time.html">Learn More</a></li>
+                    </div>
+                </div>
+
+                <div class="resource-card">
+                    <h2>Physical Activity</h2>
+                    <div class="resource-content">
+                        <h3>Stretching & Yoga</h3>
+                        <p>Simple movements to relieve stress and improve focus.</p>
+                        <li></li><a href="physical.html">Learn More</a></li>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Calma. All rights reserved.</p>
+    </footer>
+</body>
+</html>

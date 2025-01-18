@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stress Assessment - Calma</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://clerk.browser.accounts.dev/npm/@clerk/clerk-js@4/dist/clerk.browser.js"></script>
+    <script>
+        const clerk = window.Clerk('pk_test_d2lyZWQtYWtpdGEtMS5jbGVyay5hY2NvdW50cy5kZXYk');
+        
+        async function initClerk() {
+            await clerk.load();
+            
+            if (!clerk.user) {
+                // Redirect to homepage if not signed in
+                window.location.href = 'index.html';
+            }
+        }
+
+        initClerk();
+    </script>
+</head>
+<body>
+    <header>
+        <!-- Same header as index.html -->
+    </header>
+
+    <main>
+        <section class="questionnaire-page">
+            <h1>Stress Analysis Questionnaire</h1>
+            <div class="questionnaire-description">
+                <p>Welcome to our comprehensive stress analysis questionnaire. This assessment will help us understand your stress levels and provide personalized recommendations.</p>
+            </div>
+            <div class="form-container">
+                <iframe src="https://forms.office.com/Pages/ResponsePage.aspx?id=9NpbLPKP2Uu9VHxQqyGVkP8ss87FtUtCjQVGgbBMF95UMFhHVEYyWUFHS1Y2RTczOEhOVkhPUTQ2Qi4u" 
+                        frameborder="0" 
+                        width="100%" 
+                        height="600px">
+                </iframe>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Calma. All rights reserved.</p>
+    </footer>
+</body>
+</html>
